@@ -1,6 +1,9 @@
 import React from 'react';
+import { useLanguage } from '../utils/LanguageContext';
 
 const SimpleHomePage = ({ onRoleSelect }) => {
+  const { language, changeLanguage, t } = useLanguage();
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Navbar */}
@@ -12,19 +15,26 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                 <span className="text-white font-bold text-lg">MH</span>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MigoHealth</h1>
-                <p className="text-sm text-gray-600 font-medium">Digital Health Records System</p>
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('title')}</h1>
+                <p className="text-sm text-gray-600 font-medium">{t('subtitle')}</p>
               </div>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#" className="navbar-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg font-medium">Home</a>
-              <a href="#" className="navbar-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg font-medium">About</a>
-              <a href="#" className="navbar-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg font-medium">Services</a>
-              <a href="#" className="navbar-link text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg font-medium">Contact</a>
-            </nav>
-            <div className="text-right bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-lg border border-blue-200">
-              <p className="text-sm font-bold text-gray-900">Government of Kerala</p>
-              <p className="text-xs text-blue-600 font-medium">Health Department</p>
+            
+            <div className="flex items-center space-x-4">
+              <select 
+                value={language} 
+                onChange={(e) => changeLanguage(e.target.value)}
+                className="px-4 py-2 border-2 border-blue-300 rounded-lg text-sm bg-blue-50 font-medium text-blue-800 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="en">🇺🇸 English</option>
+                <option value="hi">🇮🇳 हिंदी</option>
+                <option value="ml">🇮🇳 മലയാളം</option>
+              </select>
+              
+              <div className="text-right bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-lg border border-blue-200">
+                <p className="text-sm font-bold text-gray-900">Government of Kerala</p>
+                <p className="text-xs text-blue-600 font-medium">Health Department</p>
+              </div>
             </div>
           </div>
         </div>
@@ -34,7 +44,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
       <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Digital Health Record System
+            {t('subtitle')}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Connecting Doctors, Migrant Workers, and Health Departments securely
@@ -46,7 +56,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Portal</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('choosePortal')}</h2>
             <p className="text-lg text-gray-600">Select your role to access the appropriate services</p>
           </div>
 
@@ -83,12 +93,34 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                   <span className="text-green-600 font-bold text-xl">WR</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Worker Portal</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">{t('workerPortal')}</h3>
                   <p className="text-green-600 font-medium">Migrant Workers</p>
                 </div>
               </div>
               <p className="text-gray-600 mb-6">
                 Register for health ID, scan QR codes, and access your medical records
+              </p>
+              <div className="portal-button bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-green-700 hover:to-green-800">
+                Access Portal
+              </div>
+            </div>
+
+            {/* Hospital Portal Card */}
+            <div 
+              onClick={() => onRoleSelect('hospital')}
+              className="portal-card flex-1 cursor-pointer bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-green-500 hover:shadow-lg"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mr-6">
+                  <span className="text-green-600 font-bold text-xl">HP</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">{t('hospitalPortal')}</h3>
+                  <p className="text-green-600 font-medium">Hospital Staff</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Register new workers and search existing patient records
               </p>
               <div className="portal-button bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-green-700 hover:to-green-800">
                 Access Portal
@@ -105,7 +137,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                   <span className="text-purple-600 font-bold text-xl">HD</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Health Department</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">{t('healthDept')}</h3>
                   <p className="text-purple-600 font-medium">Government Officials</p>
                 </div>
               </div>

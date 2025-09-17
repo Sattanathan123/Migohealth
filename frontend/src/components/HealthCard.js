@@ -7,16 +7,7 @@ const HealthCard = ({ worker, onBack }) => {
 
   useEffect(() => {
     if (worker && qrRef.current) {
-      const workerData = {
-        healthId: worker.healthId,
-        name: worker.name,
-        age: worker.age,
-        gender: worker.gender,
-        originState: worker.originState,
-        type: 'KERALA_HEALTH_ID'
-      };
-      
-      const qrData = `HEALTH_ID:${JSON.stringify(workerData)}`;
+      const qrData = worker.healthId;
       
       QRCode.toCanvas(qrRef.current, qrData, {
         width: 120,

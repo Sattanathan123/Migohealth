@@ -11,7 +11,11 @@ public class Prescription {
     private Long id;
     
     private String workerHealthId;
+    private Long workerId;
     private String doctorId;
+    private String doctorName;
+    private String medications;
+    private String notes;
     private String prescriptionText;
     private String imageUrl;
     private LocalDateTime createdAt;
@@ -33,8 +37,20 @@ public class Prescription {
     public String getWorkerHealthId() { return workerHealthId; }
     public void setWorkerHealthId(String workerHealthId) { this.workerHealthId = workerHealthId; }
     
+    public Long getWorkerId() { return workerId; }
+    public void setWorkerId(Long workerId) { this.workerId = workerId; }
+    
     public String getDoctorId() { return doctorId; }
     public void setDoctorId(String doctorId) { this.doctorId = doctorId; }
+    
+    public String getDoctorName() { return doctorName; }
+    public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
+    
+    public String getMedications() { return medications; }
+    public void setMedications(String medications) { this.medications = medications; }
+    
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
     
     public String getPrescriptionText() { return prescriptionText; }
     public void setPrescriptionText(String prescriptionText) { this.prescriptionText = prescriptionText; }

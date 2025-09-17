@@ -6,35 +6,34 @@ const QRScanner = ({ onScanSuccess, onBack }) => {
   const [loading, setLoading] = useState(false);
 
   const handleScan = async (data) => {
-    if (data && data.text) {
-      setLoading(true);
-      setError('');
+    // Skip if data is null, undefined, or empty
+    if (!data) return;
+    
+    const healthId = typeof data === 'string' ? data : (data.text || data);
+    
+    // Skip if healthId is still null, undefined, or empty
+    if (!healthId || healthId === 'undefined' || healthId === 'null') return;
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Treat as health ID and fetch from server
+      const response = await fetch(`http://localhost:8085/api/workers/${healthId}`);
       
-      try {
-        // Check if it's encoded worker data
-        if (data.text.startsWith('HEALTH_ID:')) {
-          const jsonData = data.text.replace('HEALTH_ID:', '');
-          const workerData = JSON.parse(jsonData);
-          onScanSuccess(workerData);
-          return;
-        }
-        
-        // Otherwise, treat as health ID and fetch from server
-        const response = await fetch(`http://localhost:8081/api/workers/${data.text}`);
-        
-        if (response.ok) {
-          const workerData = await response.json();
-          onScanSuccess(workerData);
-        } else if (response.status === 404) {
-          setError('Worker not found with this Health ID');
-        } else {
-          setError('Error fetching worker data');
-        }
-      } catch (err) {
-        setError('Invalid QR code or unable to connect to server');
-      } finally {
-        setLoading(false);
+      if (response.ok) {
+        const workerData = await response.json();
+        onScanSuccess(workerData);
+      } else if (response.status === 404) {
+        setError('Worker not found with this Health ID');
+      } else {
+        setError('Error fetching worker data');
       }
+    } catch (err) {
+      console.error('Scan error:', err);
+      setError('Unable to connect to server. Make sure backend is running on port 8085.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +44,15 @@ const QRScanner = ({ onScanSuccess, onBack }) => {
 
   const testHealthId = async (healthId) => {
     await handleScan(healthId);
+  };
+
+  const [manualId, setManualId] = useState('');
+  
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (manualId.trim()) {
+      testHealthId(manualId.trim());
+    }
   };
 
   return (
@@ -86,7 +94,26 @@ const QRScanner = ({ onScanSuccess, onBack }) => {
           )}
 
           <div className="border-t pt-4">
-            <p className="text-sm text-gray-600 mb-4">Test with sample Health IDs:</p>
+            <p className="text-sm text-gray-600 mb-4">Or enter Health ID manually:</p>
+            <form onSubmit={handleManualSubmit} className="mb-4">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={manualId}
+                  onChange={(e) => setManualId(e.target.value)}
+                  placeholder="Enter Health ID (e.g., GH-TVM-023-MW-045)"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+            
+            <p className="text-sm text-gray-600 mb-2">Test with sample Health IDs:</p>
             <div className="space-y-2">
               <button
                 onClick={() => testHealthId('GH-TVM-023-MW-045')}

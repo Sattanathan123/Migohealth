@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LanguageProvider } from './utils/LanguageContext';
 import SimpleHomePage from './components/SimpleHomePage';
 import WorkerPortal from './components/WorkerPortal';
 import QRScanner from './components/QRScanner';
@@ -9,6 +10,7 @@ import DoctorLogin from './components/DoctorLogin';
 import DoctorRegistration from './components/DoctorRegistration';
 import DoctorDashboard from './components/DoctorDashboard';
 import HealthDeptDashboard from './components/HealthDeptDashboard';
+import HospitalPortal from './components/HospitalPortal';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -24,6 +26,8 @@ function App() {
       setCurrentPage('worker-portal');
     } else if (role === 'health-dept') {
       setCurrentPage('health-dept');
+    } else if (role === 'hospital') {
+      setCurrentPage('hospital');
     }
   };
 
@@ -78,9 +82,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <LanguageProvider>
+      <div className="min-h-screen bg-gray-50">
       {currentPage === 'home' && <SimpleHomePage onRoleSelect={handleRoleSelect} />}
-      {currentPage === 'worker-portal' && <WorkerPortal onActionSelect={handleWorkerPortalSelect} onBack={handleBack} />}
+      {currentPage === 'worker-portal' && <WorkerPortal onBack={handleBack} />}
       {currentPage === 'scanner' && <QRScanner onScanSuccess={handleScanSuccess} onBack={handleBack} />}
       {currentPage === 'details' && <WorkerDetails worker={workerData} onBack={handleBack} />}
       {currentPage === 'register' && <WorkerRegistration onRegistrationSuccess={handleRegistrationSuccess} onBack={handleBack} />}
@@ -89,7 +94,9 @@ function App() {
       {currentPage === 'doctor-login' && <DoctorLogin onLoginSuccess={handleDoctorLoginSuccess} onBack={handleBack} onSwitchToRegister={handleSwitchToRegister} />}
       {currentPage === 'doctor-dashboard' && <DoctorDashboard doctor={doctorData} onLogout={handleDoctorLogout} />}
       {currentPage === 'health-dept' && <HealthDeptDashboard onBack={handleBack} />}
-    </div>
+      {currentPage === 'hospital' && <HospitalPortal onBack={handleBack} />}
+      </div>
+    </LanguageProvider>
   );
 }
 

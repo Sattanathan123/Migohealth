@@ -17,6 +17,9 @@ public class WorkerService {
         String healthId = generateHealthId(request.getOriginState());
         Worker worker = new Worker(healthId, request.getName(), request.getAge(), 
                                  request.getGender(), request.getOriginState(), request.getPhotoUrl());
+        worker.setPhoneNumber(request.getPhoneNumber());
+        worker.setEmergencyContact(request.getEmergencyContact());
+        worker.setRegisteredBy(request.getRegisteredBy() != null ? request.getRegisteredBy() : "self");
         return workerRepository.save(worker);
     }
     

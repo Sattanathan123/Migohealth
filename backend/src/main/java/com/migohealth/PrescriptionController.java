@@ -36,4 +36,10 @@ public class PrescriptionController {
         List<Prescription> prescriptions = prescriptionRepository.findByWorkerHealthIdOrderByCreatedAtDesc(healthId);
         return ResponseEntity.ok(prescriptions);
     }
+    
+    @GetMapping("/worker/id/{workerId}")
+    public ResponseEntity<List<Prescription>> getWorkerPrescriptionsById(@PathVariable Long workerId) {
+        List<Prescription> prescriptions = prescriptionRepository.findByWorkerIdOrderByCreatedAtDesc(workerId);
+        return ResponseEntity.ok(prescriptions);
+    }
 }

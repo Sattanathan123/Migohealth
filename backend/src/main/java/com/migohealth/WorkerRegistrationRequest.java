@@ -6,6 +6,9 @@ public class WorkerRegistrationRequest {
     private String gender;
     private String originState;
     private String photoUrl;
+    private String phoneNumber;
+    private String emergencyContact;
+    private String registeredBy;
     
     public WorkerRegistrationRequest() {}
     
@@ -23,4 +26,13 @@ public class WorkerRegistrationRequest {
     
     public String getPhotoUrl() { return photoUrl; }
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+    
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    
+    public String getEmergencyContact() { return emergencyContact; }
+    public void setEmergencyContact(String emergencyContact) { this.emergencyContact = emergencyContact; }
+    
+    public String getRegisteredBy() { return registeredBy; }
+    public void setRegisteredBy(String registeredBy) { this.registeredBy = registeredBy; }
 }
