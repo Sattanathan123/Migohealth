@@ -12,6 +12,12 @@ public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
     
+    @Autowired
+    private JwtUtil jwtUtil;
+    
+    @Autowired
+    private EncryptionUtil encryptionUtil;
+    
     @PostMapping("/register")
     public ResponseEntity<Doctor> registerDoctor(@RequestBody DoctorRegistrationRequest request) {
         try {
@@ -26,12 +32,16 @@ public class DoctorController {
             Doctor doctor = new Doctor(
                 doctorId,
                 request.getNmsNumber(),
-                request.getName(),
+                encryptionUtil.encrypt(request.getName()),
                 request.getPassword(),
-                request.getSpecialization(),
-                request.getHospital()
+                encryptionUtil.encrypt(request.getSpecialization()),
+                encryptionUtil.encrypt(request.getHospital())
             );
             Doctor savedDoctor = doctorRepository.save(doctor);
+            // Decrypt sensitive data before sending response
+            savedDoctor.setName(encryptionUtil.decrypt(savedDoctor.getName()));
+            savedDoctor.setSpecialization(encryptionUtil.decrypt(savedDoctor.getSpecialization()));
+            savedDoctor.setHospital(encryptionUtil.decrypt(savedDoctor.getHospital()));
             return ResponseEntity.ok(savedDoctor);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,10 +62,11 @@ public class DoctorController {
         Optional<Doctor> doctor = doctorRepository.findByDoctorId(request.getDoctorId());
         
         if (doctor.isPresent() && doctor.get().getPassword().equals(request.getPassword())) {
+            String token = jwtUtil.generateToken(doctor.get().getDoctorId());
             DoctorLoginResponse response = new DoctorLoginResponse(
                 doctor.get().getDoctorId(),
-                doctor.get().getName(),
-                "dummy-jwt-token"
+                encryptionUtil.decrypt(doctor.get().getName()),
+                token
             );
             return ResponseEntity.ok(response);
         }

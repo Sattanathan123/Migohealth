@@ -6,7 +6,11 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
     age: '',
     gender: '',
     originState: '',
-    photoUrl: ''
+    photoUrl: '',
+    nationality: 'Indian',
+    aadharNumber: '',
+    passportNumber: '',
+    visaNumber: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -34,21 +38,40 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
       // Generate health ID on frontend
       const healthId = generateHealthId(formData.originState);
       
-      // Create worker object
-      const worker = {
-        id: Date.now(),
-        healthId: healthId,
-        name: formData.name,
-        age: parseInt(formData.age),
-        gender: formData.gender,
-        originState: formData.originState,
-        photoUrl: formData.photoUrl || null
-      };
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      onRegistrationSuccess(worker);
+      // Validate required identity documents
+      if (formData.nationality === 'Indian' && !formData.aadharNumber) {
+        setError('Aadhar number is required for Indian nationals');
+        return;
+      }
+      if (formData.nationality !== 'Indian' && (!formData.passportNumber || !formData.visaNumber)) {
+        setError('Passport and visa numbers are required for foreign nationals');
+        return;
+      }
+
+      const response = await fetch('http://localhost:8085/api/workers/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          age: parseInt(formData.age),
+          gender: formData.gender,
+          originState: formData.originState,
+          photoUrl: formData.photoUrl || null,
+          nationality: formData.nationality,
+          aadharNumber: formData.nationality === 'Indian' ? formData.aadharNumber : null,
+          passportNumber: formData.nationality !== 'Indian' ? formData.passportNumber : null,
+          visaNumber: formData.nationality !== 'Indian' ? formData.visaNumber : null
+        })
+      });
+
+      if (response.ok) {
+        const worker = await response.json();
+        onRegistrationSuccess(worker);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } catch (err) {
       setError('Registration failed');
     } finally {
@@ -129,6 +152,69 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
                 <option value="Odisha">Odisha</option>
               </select>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nationality</label>
+              <select
+                name="nationality"
+                value={formData.nationality}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-lg"
+              >
+                <option value="Indian">Indian</option>
+                <option value="Bangladeshi">Bangladeshi</option>
+                <option value="Nepali">Nepali</option>
+                <option value="Sri Lankan">Sri Lankan</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            {formData.nationality === 'Indian' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Aadhar Number *</label>
+                <input
+                  type="text"
+                  name="aadharNumber"
+                  value={formData.aadharNumber}
+                  onChange={handleChange}
+                  required
+                  pattern="[0-9]{12}"
+                  maxLength="12"
+                  className="w-full p-2 border rounded-lg"
+                  placeholder="12-digit Aadhar number"
+                />
+              </div>
+            )}
+
+            {formData.nationality !== 'Indian' && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Passport Number *</label>
+                  <input
+                    type="text"
+                    name="passportNumber"
+                    value={formData.passportNumber}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-2 border rounded-lg"
+                    placeholder="Passport number"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Visa Number *</label>
+                  <input
+                    type="text"
+                    name="visaNumber"
+                    value={formData.visaNumber}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-2 border rounded-lg"
+                    placeholder="Visa number"
+                  />
+                </div>
+              </>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Photo URL (Optional)</label>

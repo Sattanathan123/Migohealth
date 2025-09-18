@@ -9,6 +9,10 @@ public class WorkerRegistrationRequest {
     private String phoneNumber;
     private String emergencyContact;
     private String registeredBy;
+    private String nationality;
+    private String aadharNumber;
+    private String passportNumber;
+    private String visaNumber;
     
     public WorkerRegistrationRequest() {}
     
@@ -35,4 +39,16 @@ public class WorkerRegistrationRequest {
     
     public String getRegisteredBy() { return registeredBy; }
     public void setRegisteredBy(String registeredBy) { this.registeredBy = registeredBy; }
+    
+    public String getNationality() { return nationality; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
+    
+    public String getAadharNumber() { return aadharNumber; }
+    public void setAadharNumber(String aadharNumber) { this.aadharNumber = aadharNumber; }
+    
+    public String getPassportNumber() { return passportNumber; }
+    public void setPassportNumber(String passportNumber) { this.passportNumber = passportNumber; }
+    
+    public String getVisaNumber() { return visaNumber; }
+    public void setVisaNumber(String visaNumber) { this.visaNumber = visaNumber; }
 }

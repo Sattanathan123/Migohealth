@@ -10,10 +10,13 @@ import DoctorLogin from './components/DoctorLogin';
 import DoctorRegistration from './components/DoctorRegistration';
 import DoctorDashboard from './components/DoctorDashboard';
 import HealthDeptDashboard from './components/HealthDeptDashboard';
-import HospitalPortal from './components/HospitalPortal';
+import HospitalDashboard from './components/HospitalDashboard';
+import PublicWorkerView from './components/PublicWorkerView';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  // Check if URL is for public worker view
+  const isPublicWorkerView = window.location.pathname.startsWith('/worker/');
+  const [currentPage, setCurrentPage] = useState(isPublicWorkerView ? 'public-worker' : 'simple-home');
   const [workerData, setWorkerData] = useState(null);
   const [doctorData, setDoctorData] = useState(null);
   const [selectedRole, setSelectedRole] = useState('');
@@ -71,11 +74,11 @@ function App() {
     localStorage.removeItem('doctorToken');
     localStorage.removeItem('doctorId');
     localStorage.removeItem('doctorName');
-    setCurrentPage('home');
+    setCurrentPage('simple-home');
   };
 
   const handleBack = () => {
-    setCurrentPage('home');
+    setCurrentPage('simple-home');
     setWorkerData(null);
     setDoctorData(null);
     setSelectedRole('');
@@ -84,7 +87,7 @@ function App() {
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-gray-50">
-      {currentPage === 'home' && <SimpleHomePage onRoleSelect={handleRoleSelect} />}
+      {currentPage === 'simple-home' && <SimpleHomePage onRoleSelect={handleRoleSelect} />}
       {currentPage === 'worker-portal' && <WorkerPortal onBack={handleBack} />}
       {currentPage === 'scanner' && <QRScanner onScanSuccess={handleScanSuccess} onBack={handleBack} />}
       {currentPage === 'details' && <WorkerDetails worker={workerData} onBack={handleBack} />}
@@ -94,7 +97,8 @@ function App() {
       {currentPage === 'doctor-login' && <DoctorLogin onLoginSuccess={handleDoctorLoginSuccess} onBack={handleBack} onSwitchToRegister={handleSwitchToRegister} />}
       {currentPage === 'doctor-dashboard' && <DoctorDashboard doctor={doctorData} onLogout={handleDoctorLogout} />}
       {currentPage === 'health-dept' && <HealthDeptDashboard onBack={handleBack} />}
-      {currentPage === 'hospital' && <HospitalPortal onBack={handleBack} />}
+      {currentPage === 'hospital' && <HospitalDashboard onBack={handleBack} />}
+      {currentPage === 'public-worker' && <PublicWorkerView />}
       </div>
     </LanguageProvider>
   );

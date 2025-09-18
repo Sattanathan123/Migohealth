@@ -9,18 +9,58 @@ public class WorkerService {
     @Autowired
     private WorkerRepository workerRepository;
     
+    @Autowired
+    private EncryptionUtil encryptionUtil;
+    
     public Optional<Worker> getWorkerByHealthId(String healthId) {
         return workerRepository.findByHealthId(healthId);
     }
     
     public Worker registerWorker(WorkerRegistrationRequest request) {
         String healthId = generateHealthId(request.getOriginState());
-        Worker worker = new Worker(healthId, request.getName(), request.getAge(), 
-                                 request.getGender(), request.getOriginState(), request.getPhotoUrl());
-        worker.setPhoneNumber(request.getPhoneNumber());
-        worker.setEmergencyContact(request.getEmergencyContact());
+        Worker worker = new Worker(healthId, encryptionUtil.encrypt(request.getName()), request.getAge(), 
+                                 request.getGender(), encryptionUtil.encrypt(request.getOriginState()), request.getPhotoUrl());
+        if (request.getPhoneNumber() != null) {
+            worker.setPhoneNumber(encryptionUtil.encrypt(request.getPhoneNumber()));
+        }
+        if (request.getEmergencyContact() != null) {
+            worker.setEmergencyContact(encryptionUtil.encrypt(request.getEmergencyContact()));
+        }
         worker.setRegisteredBy(request.getRegisteredBy() != null ? request.getRegisteredBy() : "self");
-        return workerRepository.save(worker);
+        worker.setNationality(request.getNationality());
+        
+        if ("Indian".equalsIgnoreCase(request.getNationality()) && request.getAadharNumber() != null) {
+            worker.setAadharNumber(encryptionUtil.encrypt(request.getAadharNumber()));
+        }
+        if (!"Indian".equalsIgnoreCase(request.getNationality())) {
+            if (request.getPassportNumber() != null) {
+                worker.setPassportNumber(encryptionUtil.encrypt(request.getPassportNumber()));
+            }
+            if (request.getVisaNumber() != null) {
+                worker.setVisaNumber(encryptionUtil.encrypt(request.getVisaNumber()));
+            }
+        }
+        Worker savedWorker = workerRepository.save(worker);
+        
+        // Decrypt sensitive data before returning
+        savedWorker.setName(encryptionUtil.decrypt(savedWorker.getName()));
+        savedWorker.setOriginState(encryptionUtil.decrypt(savedWorker.getOriginState()));
+        if (savedWorker.getPhoneNumber() != null) {
+            savedWorker.setPhoneNumber(encryptionUtil.decrypt(savedWorker.getPhoneNumber()));
+        }
+        if (savedWorker.getEmergencyContact() != null) {
+            savedWorker.setEmergencyContact(encryptionUtil.decrypt(savedWorker.getEmergencyContact()));
+        }
+        if (savedWorker.getAadharNumber() != null) {
+            savedWorker.setAadharNumber(encryptionUtil.decrypt(savedWorker.getAadharNumber()));
+        }
+        if (savedWorker.getPassportNumber() != null) {
+            savedWorker.setPassportNumber(encryptionUtil.decrypt(savedWorker.getPassportNumber()));
+        }
+        if (savedWorker.getVisaNumber() != null) {
+            savedWorker.setVisaNumber(encryptionUtil.decrypt(savedWorker.getVisaNumber()));
+        }
+        return savedWorker;
     }
     
     private String generateHealthId(String originState) {

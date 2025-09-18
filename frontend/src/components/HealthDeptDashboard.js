@@ -32,7 +32,7 @@ const HealthDeptDashboard = ({ onBack }) => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white text-xl">👥</span>
+                <span className="text-white text-xl">W</span>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Total Workers</p>
@@ -45,7 +45,7 @@ const HealthDeptDashboard = ({ onBack }) => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white text-xl">👨⚕️</span>
+                <span className="text-white text-xl">D</span>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Registered Doctors</p>
@@ -58,7 +58,7 @@ const HealthDeptDashboard = ({ onBack }) => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white text-xl">📋</span>
+                <span className="text-white text-xl">P</span>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Prescriptions</p>
@@ -71,7 +71,7 @@ const HealthDeptDashboard = ({ onBack }) => {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white text-xl">🏥</span>
+                <span className="text-white text-xl">H</span>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Active Hospitals</p>

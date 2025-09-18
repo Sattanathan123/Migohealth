@@ -7,11 +7,14 @@ const HealthCard = ({ worker, onBack }) => {
 
   useEffect(() => {
     if (worker && qrRef.current) {
-      const qrData = worker.healthId;
+      const qrData = `Name: ${worker.name}\nHealth ID: ${worker.healthId}\nAge: ${worker.age}\nGender: ${worker.gender}\nOrigin: ${worker.originState}\nIssued by: Kerala Health Dept`;
       
       QRCode.toCanvas(qrRef.current, qrData, {
-        width: 120,
-        margin: 2,
+        width: 150,
+        margin: 1,
+        errorCorrectionLevel: 'M',
+        type: 'image/png',
+        quality: 0.92,
         color: {
           dark: '#000000',
           light: '#FFFFFF'
@@ -105,7 +108,7 @@ const HealthCard = ({ worker, onBack }) => {
                 
                 <!-- QR Code -->
                 <div style="flex-shrink: 0; text-align: center;">
-                  <img src="${qrDataURL}" style="width: 120px; height: 120px; border: 1px solid #e5e7eb; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); margin-bottom: 0.25rem;" alt="QR Code" />
+                  <img src="${qrDataURL}" style="width: 150px; height: 150px; border: 1px solid #e5e7eb; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); margin-bottom: 0.25rem; image-rendering: pixelated;" alt="QR Code" />
                   <p style="font-size: 0.75rem; color: #6b7280; margin: 0;">Scan QR</p>
                 </div>
               </div>
@@ -156,6 +159,11 @@ const HealthCard = ({ worker, onBack }) => {
 
           <div ref={cardRef} className="health-card bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg border-2 border-blue-200">
             <div className="text-center mb-4">
+              <img 
+                src="https://www.madhyamam.com/h-upload/2023/05/25/1987330-health-department-logo.jpg" 
+                alt="Kerala Health Department" 
+                className="w-16 h-16 mx-auto mb-2 object-contain"
+              />
               <h3 className="text-lg font-bold text-blue-800">Kerala Migrant Worker</h3>
               <h4 className="text-md font-semibold text-blue-700">Digital Health ID</h4>
             </div>
@@ -186,11 +194,16 @@ const HealthCard = ({ worker, onBack }) => {
             <div className="text-center">
               <p className="text-sm text-gray-600 mb-2">Scan QR Code</p>
               <div className="flex justify-center">
-                <canvas ref={qrRef} className="border border-gray-300 rounded"></canvas>
+                <canvas ref={qrRef} className="border border-gray-300 rounded" style={{imageRendering: 'pixelated'}}></canvas>
               </div>
             </div>
 
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center flex items-center justify-center space-x-2">
+              <img 
+                src="https://www.madhyamam.com/h-upload/2023/05/25/1987330-health-department-logo.jpg" 
+                alt="Kerala Health Department" 
+                className="w-4 h-4 object-contain"
+              />
               <p className="text-xs text-gray-500">
                 Government of Kerala | Health Department
               </p>

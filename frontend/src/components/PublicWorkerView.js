@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 const PublicWorkerView = () => {
-  const { healthId } = useParams();
+  const healthId = window.location.pathname.split('/').pop();
   const [worker, setWorker] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -10,7 +10,7 @@ const PublicWorkerView = () => {
   useEffect(() => {
     const fetchWorker = async () => {
       try {
-        const response = await fetch(`http://localhost:8081/api/workers/${healthId}`);
+        const response = await fetch(`http://localhost:8085/api/workers/${healthId}`);
         if (response.ok) {
           const workerData = await response.json();
           setWorker(workerData);

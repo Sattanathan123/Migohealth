@@ -15,9 +15,15 @@ public class Doctor {
     @Column(unique = true, nullable = false)
     private String nmsNumber;
     
+    @Column(columnDefinition = "TEXT")
     private String name;
+    
     private String password;
+    
+    @Column(columnDefinition = "TEXT")
     private String specialization;
+    
+    @Column(columnDefinition = "TEXT")
     private String hospital;
     
     public Doctor() {}

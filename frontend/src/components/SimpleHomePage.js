@@ -11,8 +11,12 @@ const SimpleHomePage = ({ onRoleSelect }) => {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="navbar-brand w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-lg">MH</span>
+              <div className="navbar-brand w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
+                <img 
+                  src="https://www.madhyamam.com/h-upload/2023/05/25/1987330-health-department-logo.jpg" 
+                  alt="Kerala Health Department" 
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('title')}</h1>
@@ -26,14 +30,21 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                 onChange={(e) => changeLanguage(e.target.value)}
                 className="px-4 py-2 border-2 border-blue-300 rounded-lg text-sm bg-blue-50 font-medium text-blue-800 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="en">🇺🇸 English</option>
-                <option value="hi">🇮🇳 हिंदी</option>
-                <option value="ml">🇮🇳 മലയാളം</option>
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="ml">മലയാളം</option>
               </select>
               
-              <div className="text-right bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-lg border border-blue-200">
-                <p className="text-sm font-bold text-gray-900">Government of Kerala</p>
-                <p className="text-xs text-blue-600 font-medium">Health Department</p>
+              <div className="text-right bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-lg border border-blue-200 flex items-center space-x-2">
+                <img 
+                  src="https://www.madhyamam.com/h-upload/2023/05/25/1987330-health-department-logo.jpg" 
+                  alt="Kerala Health Department" 
+                  className="w-8 h-8 object-contain"
+                />
+                <div>
+                  <p className="text-sm font-bold text-gray-900">Government of Kerala</p>
+                  <p className="text-xs text-blue-600 font-medium">Health Department</p>
+                </div>
               </div>
             </div>
           </div>

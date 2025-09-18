@@ -12,11 +12,25 @@ public class WorkerController {
     @Autowired
     private WorkerService workerService;
     
+    @Autowired
+    private EncryptionUtil encryptionUtil;
+    
     @GetMapping("/{healthId}")
     public ResponseEntity<Worker> getWorkerByHealthId(@PathVariable String healthId) {
         Optional<Worker> worker = workerService.getWorkerByHealthId(healthId);
-        return worker.map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+        if (worker.isPresent()) {
+            Worker w = worker.get();
+            // Decrypt sensitive data before sending response
+            w.setName(encryptionUtil.decrypt(w.getName()));
+            w.setOriginState(encryptionUtil.decrypt(w.getOriginState()));
+            if (w.getPhoneNumber() != null) w.setPhoneNumber(encryptionUtil.decrypt(w.getPhoneNumber()));
+            if (w.getEmergencyContact() != null) w.setEmergencyContact(encryptionUtil.decrypt(w.getEmergencyContact()));
+            if (w.getAadharNumber() != null) w.setAadharNumber(encryptionUtil.decrypt(w.getAadharNumber()));
+            if (w.getPassportNumber() != null) w.setPassportNumber(encryptionUtil.decrypt(w.getPassportNumber()));
+            if (w.getVisaNumber() != null) w.setVisaNumber(encryptionUtil.decrypt(w.getVisaNumber()));
+            return ResponseEntity.ok(w);
+        }
+        return ResponseEntity.notFound().build();
     }
     
     @PostMapping("/register")

@@ -5,10 +5,10 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
-    { id: 'overview', name: 'Overview', icon: '📊' },
-    { id: 'upload', name: 'Upload Prescription', icon: '📋' },
-    { id: 'workers', name: 'Worker History', icon: '👥' },
-    { id: 'profile', name: 'Profile', icon: '👨⚕️' }
+    { id: 'overview', name: 'Overview' },
+    { id: 'upload', name: 'Upload Prescription' },
+    { id: 'workers', name: 'Worker History' },
+    { id: 'profile', name: 'Profile' }
   ];
 
   return (
@@ -51,7 +51,6 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <span className="text-lg">{tab.icon}</span>
                   <span className="font-medium">{tab.name}</span>
                 </button>
               ))}
@@ -67,7 +66,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                   <div className="bg-blue-50 p-6 rounded-lg">
                     <div className="flex items-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">👥</span>
+                        <span className="text-white text-xl">P</span>
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">Total Patients</p>
@@ -78,7 +77,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                   <div className="bg-green-50 p-6 rounded-lg">
                     <div className="flex items-center">
                       <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">📋</span>
+                        <span className="text-white text-xl">R</span>
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">Prescriptions</p>
@@ -89,7 +88,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                   <div className="bg-purple-50 p-6 rounded-lg">
                     <div className="flex items-center">
                       <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">📊</span>
+                        <span className="text-white text-xl">M</span>
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">This Month</p>
