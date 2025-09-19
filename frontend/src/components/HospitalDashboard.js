@@ -97,7 +97,7 @@ const HospitalDashboard = ({ onBack }) => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">HP</span>
               </div>
               <div>
@@ -108,13 +108,13 @@ const HospitalDashboard = ({ onBack }) => {
             <div className="flex space-x-2">
               <button
                 onClick={handleStaffLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
               >
                 Logout
               </button>
               <button
                 onClick={onBack}
-                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 Back to Home
               </button>
@@ -132,15 +132,15 @@ const HospitalDashboard = ({ onBack }) => {
                 onClick={() => setActiveTab('overview')}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   activeTab === 'overview'
-                    ? 'bg-green-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-blue-50'
                 }`}
               >
                 <span className="font-medium">Overview</span>
               </button>
               <button
                 onClick={() => setShowRegistration(true)}
-                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-gray-100"
+                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-700 hover:bg-blue-50"
               >
                 <span className="font-medium">Register Worker</span>
               </button>
@@ -148,8 +148,8 @@ const HospitalDashboard = ({ onBack }) => {
                 onClick={() => setActiveTab('search')}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   activeTab === 'search'
-                    ? 'bg-green-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-blue-50'
                 }`}
               >
                 <span className="font-medium">Search Workers</span>
@@ -174,9 +174,9 @@ const HospitalDashboard = ({ onBack }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-green-50 p-6 rounded-lg">
+                  <div className="bg-blue-50 p-6 rounded-lg">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
                         <span className="text-white text-xl">T</span>
                       </div>
                       <div>
@@ -185,9 +185,9 @@ const HospitalDashboard = ({ onBack }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-purple-50 p-6 rounded-lg">
+                  <div className="bg-blue-50 p-6 rounded-lg">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
                         <span className="text-white text-xl">M</span>
                       </div>
                       <div>
@@ -203,14 +203,14 @@ const HospitalDashboard = ({ onBack }) => {
                   <div className="grid md:grid-cols-2 gap-4">
                     <button
                       onClick={() => setShowRegistration(true)}
-                      className="bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 text-left"
+                      className="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700 text-left transition-colors"
                     >
                       <h4 className="font-semibold">Register New Worker</h4>
                       <p className="text-sm opacity-90">Add a new migrant worker to the system</p>
                     </button>
                     <button
                       onClick={() => setActiveTab('search')}
-                      className="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700 text-left"
+                      className="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700 text-left transition-colors"
                     >
                       <h4 className="font-semibold">Search Workers</h4>
                       <p className="text-sm opacity-90">Find existing worker records</p>
@@ -230,7 +230,7 @@ const HospitalDashboard = ({ onBack }) => {
                     className="w-full p-3 border rounded-lg"
                   />
                 </div>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                   Search
                 </button>
                 <div className="mt-6">

@@ -28,7 +28,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
             </div>
             <button
               onClick={onLogout}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
             >
               Logout
             </button>
@@ -48,7 +48,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                     activeTab === tab.id
                       ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-gray-700 hover:bg-blue-50'
                   }`}
                 >
                   <span className="font-medium">{tab.name}</span>

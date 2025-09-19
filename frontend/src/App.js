@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LanguageProvider } from './utils/LanguageContext';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 import SimpleHomePage from './components/SimpleHomePage';
 import WorkerPortal from './components/WorkerPortal';
 import QRScanner from './components/QRScanner';
@@ -11,6 +12,7 @@ import DoctorRegistration from './components/DoctorRegistration';
 import DoctorDashboard from './components/DoctorDashboard';
 import HealthDeptDashboard from './components/HealthDeptDashboard';
 import HospitalDashboard from './components/HospitalDashboard';
+import PharmacyDashboard from './components/PharmacyDashboard';
 import PublicWorkerView from './components/PublicWorkerView';
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
       setCurrentPage('health-dept');
     } else if (role === 'hospital') {
       setCurrentPage('hospital');
+    } else if (role === 'pharmacy') {
+      setCurrentPage('pharmacy');
     }
   };
 
@@ -98,8 +102,10 @@ function App() {
       {currentPage === 'doctor-dashboard' && <DoctorDashboard doctor={doctorData} onLogout={handleDoctorLogout} />}
       {currentPage === 'health-dept' && <HealthDeptDashboard onBack={handleBack} />}
       {currentPage === 'hospital' && <HospitalDashboard onBack={handleBack} />}
+      {currentPage === 'pharmacy' && <PharmacyDashboard onBack={handleBack} />}
       {currentPage === 'public-worker' && <PublicWorkerView />}
       </div>
+      <PWAInstallPrompt />
     </LanguageProvider>
   );
 }
