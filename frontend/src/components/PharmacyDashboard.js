@@ -77,30 +77,39 @@ const PharmacyDashboard = ({ onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 relative overflow-hidden">
+      <div className="absolute inset-0 bg-white/20"></div>
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+      </div>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-white/80 backdrop-blur-md shadow-xl border-b border-white/20 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">PH</span>
+            <div className="flex items-center space-x-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-2xl">Rx</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-800">Pharmacy Portal</h1>
-                <p className="text-sm text-gray-600">Welcome, {pharmacist?.name} - {pharmacist?.pharmacyName}</p>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Pharmacy Portal</h1>
+                <p className="text-lg text-gray-700 font-medium">Welcome, {pharmacist?.name} - {pharmacist?.pharmacyName}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-green-600 font-semibold">System Active</span>
+                </div>
               </div>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-4">
               <button
                 onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Logout
               </button>
               <button
                 onClick={onBack}
-                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Back to Home
               </button>
@@ -109,20 +118,27 @@ const PharmacyDashboard = ({ onBack }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex">
+      <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
+        <div className="flex gap-8">
           {/* Sidebar */}
-          <div className="w-64 bg-white rounded-lg shadow-sm p-4 mr-6">
-            <nav className="space-y-2">
+          <div className="w-80 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-6 border border-white/20">
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Navigation</h3>
+              <p className="text-sm text-gray-600">Manage pharmacy operations</p>
+            </div>
+            <nav className="space-y-3">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl text-left transition-all duration-300 transform hover:scale-105 ${
                   activeTab === 'overview'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-blue-50'
+                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-blue-50 hover:shadow-md'
                 }`}
               >
-                <span className="font-medium">Overview</span>
+                <span className="font-semibold">Overview</span>
+                {activeTab === 'overview' && (
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                )}
               </button>
               <button
                 onClick={() => setActiveTab('inventory')}
@@ -172,40 +188,28 @@ const PharmacyDashboard = ({ onBack }) => {
           {/* Main Content */}
           <div className="flex-1">
             {activeTab === 'overview' && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Pharmacy Dashboard</h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-8">Pharmacy Dashboard</h2>
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-blue-50 p-6 rounded-lg">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">M</span>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Migrant Visitors</p>
-                        <p className="text-2xl font-bold text-gray-800">{visitedWorkers.length}</p>
-                      </div>
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-2xl border border-blue-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-blue-700 mb-2">{visitedWorkers.length}</div>
+                      <div className="text-lg font-semibold text-gray-800 mb-1">Migrant Visitors</div>
+                      <div className="text-sm text-blue-600">This month</div>
                     </div>
                   </div>
-                  <div className="bg-blue-50 p-6 rounded-lg">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">P</span>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Prescriptions</p>
-                        <p className="text-2xl font-bold text-gray-800">24</p>
-                      </div>
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-100 p-8 rounded-2xl border border-indigo-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-indigo-700 mb-2">24</div>
+                      <div className="text-lg font-semibold text-gray-800 mb-1">Prescriptions</div>
+                      <div className="text-sm text-indigo-600">Processed today</div>
                     </div>
                   </div>
-                  <div className="bg-blue-50 p-6 rounded-lg">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                        <span className="text-white text-xl">T</span>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Today's Sales</p>
-                        <p className="text-2xl font-bold text-gray-800">12</p>
-                      </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-2xl border border-purple-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-purple-700 mb-2">12</div>
+                      <div className="text-lg font-semibold text-gray-800 mb-1">Today's Sales</div>
+                      <div className="text-sm text-purple-600">Transactions</div>
                     </div>
                   </div>
                 </div>
