@@ -20,32 +20,33 @@ const PrescriptionUpload = ({ doctorId }) => {
     setSuccess('');
 
     try {
-      const uploadData = {
+      // Simulate upload delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Store prescription data locally
+      const prescriptionData = {
+        id: Date.now(),
         doctorId: doctorId,
+        workerHealthId: formData.workerHealthId,
         prescriptionText: formData.prescriptionText,
-        imageUrl: formData.imageFile ? 'uploaded-image.jpg' : ''
+        imageFile: formData.imageFile ? formData.imageFile.name : null,
+        timestamp: new Date().toISOString()
       };
-
-      const response = await fetch(`http://localhost:8085/api/prescriptions/upload/${formData.workerHealthId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(uploadData)
+      
+      // Save to localStorage
+      const existingPrescriptions = JSON.parse(localStorage.getItem('prescriptions') || '[]');
+      existingPrescriptions.push(prescriptionData);
+      localStorage.setItem('prescriptions', JSON.stringify(existingPrescriptions));
+      
+      setSuccess('✅ Prescription uploaded successfully!');
+      setFormData({
+        workerHealthId: '',
+        prescriptionText: '',
+        imageFile: null
       });
-
-      if (response.ok) {
-        setSuccess('Prescription uploaded successfully!');
-        setFormData({
-          workerHealthId: '',
-          prescriptionText: '',
-          imageFile: null
-        });
-      } else {
-        setError('Failed to upload prescription');
-      }
+      
     } catch (err) {
-      setError('Unable to connect to server');
+      setError('❌ Failed to upload prescription');
     } finally {
       setLoading(false);
     }

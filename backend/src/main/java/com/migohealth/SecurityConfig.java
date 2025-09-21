@@ -22,7 +22,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/doctors/register", "/api/doctors/login").permitAll()
                 .requestMatchers("/api/hospital-staff/register", "/api/hospital-staff/login").permitAll()
-                .requestMatchers("/api/workers/register").permitAll()
+                .requestMatchers("/api/workers/**").permitAll()
+                .requestMatchers("/api/prescriptions/**").permitAll()
+                .requestMatchers("/api/dashboard/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

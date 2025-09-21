@@ -81,7 +81,15 @@ export const translations = {
       moderate: "Moderate Risk",
       critical: "Critical",
       unknown: "Unknown"
-    }
+    },
+    accessDashboard: "Access Dashboard",
+    doctorDashboard: "Doctor Dashboard",
+    pharmacyPortal: "Pharmacy Portal",
+    accessPatientRecords: "Access patient records & prescriptions",
+    scanQRCodes: "Scan QR codes & access records",
+    registerWorkers: "Register workers & manage records",
+    viewAnalytics: "View analytics & generate reports",
+    accessMedicalHistory: "Access medical history & prescriptions"
   },
   
   hi: {
@@ -166,7 +174,15 @@ export const translations = {
       moderate: "मध्यम जोखिम",
       critical: "गंभीर",
       unknown: "अज्ञात"
-    }
+    },
+    accessDashboard: "डैशबोर्ड एक्सेस करें",
+    doctorDashboard: "डॉक्टर डैशबोर्ड",
+    pharmacyPortal: "फार्मेसी पोर्टल",
+    accessPatientRecords: "रोगी रिकॉर्ड और नुस्खे एक्सेस करें",
+    scanQRCodes: "QR कोड स्कैन करें और रिकॉर्ड एक्सेस करें",
+    registerWorkers: "श्रमिकों को पंजीकृत करें और रिकॉर्ड प्रबंधित करें",
+    viewAnalytics: "एनालिटिक्स देखें और रिपोर्ट जेनरेट करें",
+    accessMedicalHistory: "चिकित्सा इतिहास और नुस्खे एक्सेस करें"
   },
   
   ml: {
@@ -251,6 +267,14 @@ export const translations = {
       moderate: "മധ്യമ അപായം",
       critical: "ഗുരുതരം",
       unknown: "അറിയില്ലാത്ത"
-    }
+    },
+    accessDashboard: "ഡാഷ്ബോര്ഡ് പ്രവേശിക്കുക",
+    doctorDashboard: "ഡോക്ടര് ഡാഷ്ബോര്ഡ്",
+    pharmacyPortal: "ഫാര്മസി പോര്ട്ടല്",
+    accessPatientRecords: "രോഗി രേഖകളും കുറിപ്പുകളും പ്രവേശിക്കുക",
+    scanQRCodes: "QR കോഡുകള് സ്കാന് ചെയ്യുകയും രേഖകള് പ്രവേശിക്കുകയും ചെയ്യുക",
+    registerWorkers: "തൊഴിലാളികളെ രജിസ്റ്റര് ചെയ്യുകയും രേഖകള് പ്രബന്ധിക്കുകയും ചെയ്യുക",
+    viewAnalytics: "അനാലിറ്റിക്സ് കാണുകയും രിപ്പോര്ട്ടുകള് ജനറേറ്റ് ചെയ്യുകയും ചെയ്യുക",
+    accessMedicalHistory: "ചികിത്സാ ചരിത്രവും കുറിപ്പുകളും പ്രവേശിക്കുക"
   }
 };

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PrescriptionUpload from './PrescriptionUpload';
+import PrescriptionViewer from './PrescriptionViewer';
+import WorkerSearch from './WorkerSearch';
+import WorkerHistory from './WorkerHistory';
 import DoctorQRScanner from './DoctorQRScanner';
 import PatientDetailsModal from './PatientDetailsModal';
 import { getDoctorStats } from '../utils/api';
@@ -18,6 +21,7 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
     { id: 'overview', name: 'Overview', icon: '📊' },
     { id: 'scan', name: 'Scan Patient', icon: '📱' },
     { id: 'upload', name: 'Upload Prescription', icon: '📝' },
+    { id: 'prescriptions', name: 'View Prescriptions', icon: '📋' },
     { id: 'workers', name: 'Worker History', icon: '👥' },
     { id: 'profile', name: 'Profile', icon: '👨‍⚕️' }
   ];
@@ -235,43 +239,19 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
             )}
 
             {activeTab === 'scan' && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">Scan Patient QR Code</h2>
-                <div className="text-center py-8">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <span className="text-white font-bold text-3xl">📱</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Access Patient Records</h3>
-                  <p className="text-gray-600 mb-8">Scan the patient's QR code to view their details and prescription history</p>
-                  <button
-                    onClick={() => setShowQRScanner(true)}
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  >
-                    Start QR Scanner
-                  </button>
-                </div>
-              </div>
+              <WorkerSearch />
             )}
 
             {activeTab === 'upload' && (
               <PrescriptionUpload doctorId={doctor.doctorId} />
             )}
 
+            {activeTab === 'prescriptions' && (
+              <PrescriptionViewer />
+            )}
+
             {activeTab === 'workers' && (
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">Patient History</h2>
-                <div className="text-center py-16">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <span className="text-white font-bold text-3xl">P</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Patient Management</h3>
-                  <p className="text-gray-600 mb-8">Advanced patient history and record management system coming soon...</p>
-                  <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold shadow-lg">
-                    <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                    Feature in Development
-                  </div>
-                </div>
-              </div>
+              <WorkerHistory doctorId={doctor.doctorId} />
             )}
 
             {activeTab === 'profile' && (

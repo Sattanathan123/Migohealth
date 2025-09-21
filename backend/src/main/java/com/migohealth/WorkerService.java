@@ -3,6 +3,7 @@ package com.migohealth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class WorkerService {
@@ -11,6 +12,10 @@ public class WorkerService {
     
     @Autowired
     private EncryptionUtil encryptionUtil;
+    
+    public List<Worker> getAllWorkers() {
+        return workerRepository.findAll();
+    }
     
     public Optional<Worker> getWorkerByHealthId(String healthId) {
         return workerRepository.findByHealthId(healthId);

@@ -13,10 +13,10 @@ const SimpleHomePage = ({ onRoleSelect }) => {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="navbar-brand w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
+              <div className="navbar-brand w-20 h-20 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
                 <img 
-                  src="https://www.madhyamam.com/h-upload/2023/05/25/1987330-health-department-logo.jpg" 
-                  alt="Kerala Health Department" 
+                  src="/migohealth-logo.png" 
+                  alt="MigoHealth" 
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -49,7 +49,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                   onClick={() => setShowPortalDropdown(!showPortalDropdown)}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center space-x-2 whitespace-nowrap"
                 >
-                  <span>{t('choosePortal')}</span>
+                  <span>{t('accessDashboard')}</span>
                   <svg className={`w-4 h-4 transition-transform ${showPortalDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -66,8 +66,8 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                             <span className="text-blue-600 font-bold">DR</span>
                           </div>
                           <div>
-                            <div className="font-semibold text-gray-800">Doctor Dashboard</div>
-                            <div className="text-sm text-gray-500">Access patient records & prescriptions</div>
+                            <div className="font-semibold text-gray-800">{t('doctorDashboard')}</div>
+                            <div className="text-sm text-gray-500">{t('accessPatientRecords')}</div>
                           </div>
                         </button>
                         
@@ -80,7 +80,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                           </div>
                           <div>
                             <div className="font-semibold text-gray-800">{t('workerPortal')}</div>
-                            <div className="text-sm text-gray-500">Scan QR codes & access records</div>
+                            <div className="text-sm text-gray-500">{t('scanQRCodes')}</div>
                           </div>
                         </button>
                         
@@ -93,7 +93,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                           </div>
                           <div>
                             <div className="font-semibold text-gray-800">{t('hospitalPortal')}</div>
-                            <div className="text-sm text-gray-500">Register workers & manage records</div>
+                            <div className="text-sm text-gray-500">{t('registerWorkers')}</div>
                           </div>
                         </button>
                         
@@ -106,7 +106,7 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                           </div>
                           <div>
                             <div className="font-semibold text-gray-800">{t('healthDept')}</div>
-                            <div className="text-sm text-gray-500">View analytics & generate reports</div>
+                            <div className="text-sm text-gray-500">{t('viewAnalytics')}</div>
                           </div>
                         </button>
                         
@@ -118,8 +118,8 @@ const SimpleHomePage = ({ onRoleSelect }) => {
                             <span className="text-orange-600 font-bold">PH</span>
                           </div>
                           <div>
-                            <div className="font-semibold text-gray-800">Pharmacy Portal</div>
-                            <div className="text-sm text-gray-500">Access medical history & prescriptions</div>
+                            <div className="font-semibold text-gray-800">{t('pharmacyPortal')}</div>
+                            <div className="text-sm text-gray-500">{t('accessMedicalHistory')}</div>
                           </div>
                         </button>
                       </div>
@@ -152,15 +152,12 @@ const SimpleHomePage = ({ onRoleSelect }) => {
           <div className="absolute bottom-10 left-1/2 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
         </div>
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-semibold text-blue-600 mb-8 shadow-lg">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-            Live Healthcare Platform
-          </div>
+
           <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-8 leading-tight pb-4">
             {t('subtitle')}
           </h1>
           <p className="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto mb-12 leading-relaxed overflow-visible">
-            Empowering healthcare access through secure, digital health records and QR-based identification system across Kerala
+            Empowering healthcare access for migrant workers through secure, digital health records and QR-based identification system across Kerala
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <button 

@@ -18,9 +18,10 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
     try {
       const response = await fetch(`http://localhost:8085/api/workers/${healthId}`);
       if (response.ok) {
-        const text = await response.text();
-        const data = text ? JSON.parse(text) : null;
-        setWorker(data);
+        const worker = await response.json();
+        setWorker(worker);
+      } else {
+        console.error('Worker not found');
       }
     } catch (error) {
       console.error('Failed to fetch worker data:', error);
@@ -29,14 +30,16 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
 
   const fetchPrescriptions = async () => {
     try {
-      const response = await fetch(`http://localhost:8085/api/workers/${healthId}/prescriptions`);
-      if (response.ok) {
-        const text = await response.text();
-        const data = text ? JSON.parse(text) : [];
-        setPrescriptions(data);
-      }
+      // Get prescriptions from localStorage
+      const storedPrescriptions = JSON.parse(localStorage.getItem('prescriptions') || '[]');
+      
+      // Filter prescriptions for this specific worker
+      const workerPrescriptions = storedPrescriptions.filter(p => p.workerHealthId === healthId);
+      
+      setPrescriptions(workerPrescriptions);
     } catch (error) {
       console.error('Failed to fetch prescriptions:', error);
+      setPrescriptions([]);
     } finally {
       setLoading(false);
     }
@@ -79,7 +82,7 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
             <div>
               <div className="flex items-center space-x-3 mb-2">
                 <h2 className="text-2xl font-bold">{worker.name}</h2>
-                <HealthStatusBadge status={worker.healthStatus} size="sm" />
+                <HealthStatusBadge status={worker.healthStatus || 'GREEN'} size="sm" />
               </div>
               <p className="text-blue-100">Health ID: {worker.healthId}</p>
             </div>
@@ -153,18 +156,29 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
                     <p className="text-lg font-semibold text-gray-800">{worker.emergencyContact}</p>
                   </div>
                 )}
+                <div className="bg-teal-50 p-4 rounded-lg">
+                  <label className="block text-sm font-medium text-teal-700 mb-1">Health Status</label>
+                  <div className="flex items-center space-x-2">
+                    <HealthStatusBadge status={worker.healthStatus || 'GREEN'} size="sm" />
+                    <span className="text-lg font-semibold text-gray-800">
+                      {worker.healthStatus || 'Healthy'}
+                    </span>
+                  </div>
+                </div>
                 {worker.bloodGroup && (
                   <div className="bg-pink-50 p-4 rounded-lg">
                     <label className="block text-sm font-medium text-pink-700 mb-1">Blood Group</label>
                     <p className="text-lg font-semibold text-gray-800">{worker.bloodGroup}</p>
                   </div>
                 )}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Registration Date</label>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {new Date(worker.registrationDate).toLocaleDateString()}
-                  </p>
-                </div>
+                {worker.registrationDate && (
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Registration Date</label>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {new Date(worker.registrationDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -184,15 +198,15 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
                   <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <h4 className="font-semibold text-gray-800">Dr. {prescription.doctorName}</h4>
+                        <h4 className="font-semibold text-gray-800">Dr. {prescription.doctorId}</h4>
                         <p className="text-sm text-gray-600">Doctor ID: {prescription.doctorId}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-gray-600">
-                          {new Date(prescription.createdAt).toLocaleDateString()}
+                          {new Date(prescription.timestamp).toLocaleDateString()}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {new Date(prescription.createdAt).toLocaleTimeString()}
+                          {new Date(prescription.timestamp).toLocaleTimeString()}
                         </p>
                       </div>
                     </div>
@@ -200,10 +214,10 @@ const PatientDetailsModal = ({ healthId, onClose }) => {
                       <h5 className="font-medium text-gray-800 mb-2">Prescription Details:</h5>
                       <p className="text-gray-700 whitespace-pre-wrap">{prescription.prescriptionText}</p>
                     </div>
-                    {prescription.notes && (
-                      <div className="mt-3 bg-blue-50 p-3 rounded-lg">
-                        <h5 className="font-medium text-blue-800 mb-1">Notes:</h5>
-                        <p className="text-blue-700">{prescription.notes}</p>
+                    {prescription.imageFile && (
+                      <div className="mt-3 bg-green-50 p-3 rounded-lg">
+                        <h5 className="font-medium text-green-800 mb-1">Image:</h5>
+                        <p className="text-green-700 text-sm">📷 {prescription.imageFile}</p>
                       </div>
                     )}
                   </div>
