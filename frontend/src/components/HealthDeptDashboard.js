@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DiseaseSurveillanceMap from './DiseaseSurveillanceMap';
 import InteractiveOutbreakMap from './InteractiveOutbreakMap';
 import HealthDeptLogin from './HealthDeptLogin';
 import HealthDeptRegistration from './HealthDeptRegistration';
+import HealthStatusBadge from './HealthStatusBadge';
 import { useLanguage } from '../utils/LanguageContext';
+import { getDashboardStats } from '../utils/api';
 
 const HealthDeptDashboard = ({ onBack }) => {
   const { t } = useLanguage();
@@ -11,6 +13,13 @@ const HealthDeptDashboard = ({ onBack }) => {
   const [healthDept, setHealthDept] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegistration, setShowRegistration] = useState(true);
+  const [dashboardStats, setDashboardStats] = useState({
+    totalWorkers: 0,
+    totalDoctors: 0,
+    totalPrescriptions: 0,
+    activeHospitals: 0,
+    healthStatusCounts: { GREEN: 0, ORANGE: 0, RED: 0 }
+  });
 
   const handleHealthDeptLogin = (deptData) => {
     setHealthDept(deptData);
@@ -28,6 +37,27 @@ const HealthDeptDashboard = ({ onBack }) => {
     setShowLogin(false);
     setShowRegistration(true);
     localStorage.removeItem('healthDeptToken');
+  };
+
+  useEffect(() => {
+    if (healthDept) {
+      fetchDashboardStats();
+    }
+  }, [healthDept]);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const stats = await getDashboardStats();
+      setDashboardStats({
+        totalWorkers: stats.totalWorkers || 0,
+        totalDoctors: stats.totalDoctors || 0,
+        totalPrescriptions: stats.totalPrescriptions || 0,
+        activeHospitals: stats.activeHospitals || 0,
+        healthStatusCounts: stats.healthStatusCounts || { GREEN: 0, ORANGE: 0, RED: 0 }
+      });
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+    }
   };
 
   const getFilteredData = (data) => {
@@ -239,7 +269,7 @@ const HealthDeptDashboard = ({ onBack }) => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Total Workers</p>
-                <p className="text-2xl font-bold text-gray-800">1,247</p>
+                <p className="text-2xl font-bold text-gray-800">{dashboardStats.totalWorkers}</p>
                 <p className="text-xs text-green-600">+12% this month</p>
               </div>
             </div>
@@ -252,7 +282,7 @@ const HealthDeptDashboard = ({ onBack }) => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Registered Doctors</p>
-                <p className="text-2xl font-bold text-gray-800">89</p>
+                <p className="text-2xl font-bold text-gray-800">{dashboardStats.totalDoctors}</p>
                 <p className="text-xs text-green-600">+3 this week</p>
               </div>
             </div>
@@ -265,7 +295,7 @@ const HealthDeptDashboard = ({ onBack }) => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Prescriptions</p>
-                <p className="text-2xl font-bold text-gray-800">3,456</p>
+                <p className="text-2xl font-bold text-gray-800">{dashboardStats.totalPrescriptions}</p>
                 <p className="text-xs text-green-600">+156 today</p>
               </div>
             </div>
@@ -278,7 +308,7 @@ const HealthDeptDashboard = ({ onBack }) => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Active Hospitals</p>
-                <p className="text-2xl font-bold text-gray-800">45</p>
+                <p className="text-2xl font-bold text-gray-800">{dashboardStats.activeHospitals}</p>
                 <p className="text-xs text-gray-500">Across Kerala</p>
               </div>
             </div>
@@ -320,6 +350,48 @@ const HealthDeptDashboard = ({ onBack }) => {
                   <div className="w-8 bg-green-500 rounded-t mb-2" style={{height: '192px'}}></div>
                   <span className="text-xs text-gray-600">Jun</span>
                   <span className="text-xs font-medium">178</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Health Status Distribution</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <HealthStatusBadge status="GREEN" size="sm" />
+                  <span className="text-sm text-gray-600 ml-3">Healthy</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-24 h-2 bg-gray-200 rounded mr-3">
+                    <div className="w-3/4 h-2 bg-green-500 rounded"></div>
+                  </div>
+                  <span className="text-sm font-medium">{dashboardStats.healthStatusCounts.GREEN}</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <HealthStatusBadge status="ORANGE" size="sm" />
+                  <span className="text-sm text-gray-600 ml-3">Moderate Risk</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-24 h-2 bg-gray-200 rounded mr-3">
+                    <div className="w-1/3 h-2 bg-orange-500 rounded"></div>
+                  </div>
+                  <span className="text-sm font-medium">{dashboardStats.healthStatusCounts.ORANGE}</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <HealthStatusBadge status="RED" size="sm" />
+                  <span className="text-sm text-gray-600 ml-3">Critical</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-24 h-2 bg-gray-200 rounded mr-3">
+                    <div className="w-1/6 h-2 bg-red-500 rounded"></div>
+                  </div>
+                  <span className="text-sm font-medium">{dashboardStats.healthStatusCounts.RED}</span>
                 </div>
               </div>
             </div>
@@ -561,7 +633,7 @@ const HealthDeptDashboard = ({ onBack }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                   <div className="bg-blue-50 p-4 lg:p-6 rounded-lg">
                     <h3 className="text-base lg:text-lg font-semibold text-gray-800 mb-2">Total Workers</h3>
-                    <p className="text-2xl lg:text-3xl font-bold text-blue-600">1,247</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-blue-600">{dashboardStats.totalWorkers}</p>
                     <p className="text-sm text-gray-600">In your jurisdiction</p>
                   </div>
                   <div className="bg-green-50 p-4 lg:p-6 rounded-lg">

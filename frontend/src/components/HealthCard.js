@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
+import HealthStatusBadge from './HealthStatusBadge';
 
 const HealthCard = ({ worker, onBack }) => {
   const qrRef = useRef();
@@ -178,7 +179,10 @@ const HealthCard = ({ worker, onBack }) => {
                 />
               )}
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-800">{worker.name}</h3>
+                <div className="flex items-center space-x-2 mb-1">
+                  <h3 className="text-lg font-semibold text-gray-800">{worker.name}</h3>
+                  <HealthStatusBadge status={worker.healthStatus} size="sm" />
+                </div>
                 <p className="text-sm text-gray-600">Age: {worker.age} | {worker.gender}</p>
                 <p className="text-sm text-gray-600">From: {worker.originState}</p>
               </div>

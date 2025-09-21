@@ -3,6 +3,7 @@ import WorkerRegistration from './WorkerRegistration';
 import HealthCard from './HealthCard';
 import HospitalStaffLogin from './HospitalStaffLogin';
 import HospitalStaffRegistration from './HospitalStaffRegistration';
+import HealthStatusBadge from './HealthStatusBadge';
 
 const HospitalDashboard = ({ onBack }) => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -171,6 +172,24 @@ const HospitalDashboard = ({ onBack }) => {
                       <div>
                         <p className="text-sm text-gray-600">Registered Workers</p>
                         <p className="text-2xl font-bold text-gray-800">156</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white p-6 rounded-lg border">
+                    <h4 className="text-sm font-medium text-gray-600 mb-3">Health Status</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <HealthStatusBadge status="GREEN" size="sm" />
+                        <span className="text-sm font-medium">112</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <HealthStatusBadge status="ORANGE" size="sm" />
+                        <span className="text-sm font-medium">33</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <HealthStatusBadge status="RED" size="sm" />
+                        <span className="text-sm font-medium">11</span>
                       </div>
                     </div>
                   </div>

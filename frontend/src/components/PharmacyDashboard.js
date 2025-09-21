@@ -3,6 +3,7 @@ import PharmacistLogin from './PharmacistLogin';
 import PharmacistRegistration from './PharmacistRegistration';
 import PharmacyQRScanner from './PharmacyQRScanner';
 import WorkerMedicalHistory from './WorkerMedicalHistory';
+import HealthStatusBadge from './HealthStatusBadge';
 import { useLanguage } from '../utils/LanguageContext';
 
 const PharmacyDashboard = ({ onBack }) => {
@@ -17,9 +18,9 @@ const PharmacyDashboard = ({ onBack }) => {
 
   // Mock data for migrant workers who visited pharmacy
   const visitedWorkers = [
-    { healthId: 'GH-TVM-023-MW-045', name: 'Ramesh Kumar', lastVisit: '2024-01-15' },
-    { healthId: 'GH-KCH-012-MW-089', name: 'Priya Sharma', lastVisit: '2024-01-14' },
-    { healthId: 'GH-EKM-045-MW-123', name: 'Suresh Yadav', lastVisit: '2024-01-13' }
+    { healthId: 'GH-TVM-023-MW-045', name: 'Ramesh Kumar', lastVisit: '2024-01-15', healthStatus: 'GREEN' },
+    { healthId: 'GH-KCH-012-MW-089', name: 'Priya Sharma', lastVisit: '2024-01-14', healthStatus: 'ORANGE' },
+    { healthId: 'GH-EKM-045-MW-123', name: 'Suresh Yadav', lastVisit: '2024-01-13', healthStatus: 'RED' }
   ];
 
   const handlePharmacistLogin = (pharmacistData) => {
@@ -239,7 +240,10 @@ const PharmacyDashboard = ({ onBack }) => {
                   {visitedWorkers.map((worker) => (
                     <div key={worker.healthId} className="border rounded-lg p-4 flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-800">{worker.name}</p>
+                        <div className="flex items-center space-x-3 mb-1">
+                          <p className="font-medium text-gray-800">{worker.name}</p>
+                          <HealthStatusBadge status={worker.healthStatus} size="sm" />
+                        </div>
                         <p className="text-sm text-gray-600">Health ID: {worker.healthId}</p>
                         <p className="text-xs text-gray-500">Last visit: {worker.lastVisit}</p>
                       </div>

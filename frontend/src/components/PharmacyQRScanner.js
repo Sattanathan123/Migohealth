@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../utils/LanguageContext';
+import HealthStatusBadge from './HealthStatusBadge';
 
 const PharmacyQRScanner = ({ onScanSuccess, onBack }) => {
   const { t } = useLanguage();
@@ -11,6 +12,7 @@ const PharmacyQRScanner = ({ onScanSuccess, onBack }) => {
     'GH-TVM-023-MW-045': {
       healthId: 'GH-TVM-023-MW-045',
       name: 'Ramesh Kumar',
+      healthStatus: 'GREEN',
       prescriptions: [
         {
           date: '2024-01-10',

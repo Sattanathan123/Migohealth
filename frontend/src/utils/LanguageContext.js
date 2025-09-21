@@ -13,11 +13,26 @@ export const useLanguage = () => {
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('migohealth-language') || 'en';
+    try {
+      return localStorage.getItem('migohealth-language') || 'en';
+    } catch (error) {
+      console.error('Language storage error:', error);
+      return 'en';
+    }
   });
 
   const t = (key) => {
-    return translations[language][key] || translations.en[key] || key;
+    try {
+      const keys = key.split('.');
+      let value = translations[language] || translations.en;
+      for (const k of keys) {
+        value = value?.[k];
+      }
+      return value || key;
+    } catch (error) {
+      console.error('Translation error:', error, key);
+      return key;
+    }
   };
 
   const changeLanguage = (lang) => {

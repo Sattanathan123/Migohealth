@@ -39,7 +39,13 @@ public class Worker {
     @Column(columnDefinition = "TEXT")
     private String visaNumber;
     
-    public Worker() {}
+    private String healthStatus; // GREEN, ORANGE, RED
+    private String bloodGroup;
+    private java.time.LocalDateTime registrationDate;
+    
+    public Worker() {
+        this.registrationDate = java.time.LocalDateTime.now();
+    }
     
     public Worker(String healthId, String name, int age, String gender, String originState, String photoUrl) {
         this.healthId = healthId;
@@ -91,4 +97,13 @@ public class Worker {
     
     public String getVisaNumber() { return visaNumber; }
     public void setVisaNumber(String visaNumber) { this.visaNumber = visaNumber; }
+    
+    public String getHealthStatus() { return healthStatus; }
+    public void setHealthStatus(String healthStatus) { this.healthStatus = healthStatus; }
+    
+    public String getBloodGroup() { return bloodGroup; }
+    public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
+    
+    public java.time.LocalDateTime getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(java.time.LocalDateTime registrationDate) { this.registrationDate = registrationDate; }
 }

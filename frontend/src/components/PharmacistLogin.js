@@ -4,7 +4,7 @@ import { useLanguage } from '../utils/LanguageContext';
 const PharmacistLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
-    email: '',
+    uniqueId: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
@@ -23,11 +23,11 @@ const PharmacistLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
       const storedData = localStorage.getItem('pharmacistData');
       if (storedData) {
         const pharmacistData = JSON.parse(storedData);
-        if (pharmacistData.email === formData.email && pharmacistData.password === formData.password) {
+        if (pharmacistData.uniqueId === formData.uniqueId.trim() && pharmacistData.password === formData.password) {
           localStorage.setItem('pharmacistToken', 'pharmacy-token-123');
           onLoginSuccess(pharmacistData);
         } else {
-          setError('Invalid credentials');
+          setError('Invalid Pharmacy ID or password');
         }
       } else {
         setError('No account found. Please register first.');
@@ -54,7 +54,7 @@ const PharmacistLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
             <span className="text-white font-bold text-xl">PH</span>
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Pharmacist Login</h2>
-          <p className="mt-2 text-sm text-gray-600">Access migrant health records securely</p>
+          <p className="mt-2 text-sm text-gray-600">Use your generated Pharmacy ID to login</p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -66,16 +66,32 @@ const PharmacistLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">Pharmacy ID</label>
               <input
-                name="email"
-                type="email"
+                name="uniqueId"
+                type="text"
                 required
-                value={formData.email}
+                value={formData.uniqueId}
                 onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="your.email@example.com"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                placeholder="Enter your generated Pharmacy ID"
               />
+              <p className="text-xs text-gray-500 mt-1">Enter the exact ID generated during registration</p>
+              <button
+                type="button"
+                onClick={() => {
+                  const stored = localStorage.getItem('pharmacistData');
+                  if (stored) {
+                    const data = JSON.parse(stored);
+                    alert(`Your registered ID is: ${data.uniqueId}`);
+                  } else {
+                    alert('No registration found. Please register first.');
+                  }
+                }}
+                className="text-xs text-blue-600 hover:text-blue-700 mt-1"
+              >
+                Show my registered ID
+              </button>
             </div>
 
             <div>

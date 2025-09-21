@@ -90,7 +90,7 @@ const HospitalStaffLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
@@ -101,7 +101,7 @@ const HospitalStaffLogin = ({ onLoginSuccess, onBack, onSwitchToRegister }) => {
               Don't have an account?{' '}
               <button
                 onClick={onSwitchToRegister}
-                className="text-green-600 hover:text-green-800 font-medium"
+                className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 Register here
               </button>

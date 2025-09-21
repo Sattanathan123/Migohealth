@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import HealthStatusBadge from './HealthStatusBadge';
+import { useLanguage } from '../utils/LanguageContext';
 
 const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -10,7 +13,9 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
     nationality: 'Indian',
     aadharNumber: '',
     passportNumber: '',
-    visaNumber: ''
+    visaNumber: '',
+    healthStatus: 'GREEN',
+    bloodGroup: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -62,7 +67,9 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
           nationality: formData.nationality,
           aadharNumber: formData.nationality === 'Indian' ? formData.aadharNumber : null,
           passportNumber: formData.nationality !== 'Indian' ? formData.passportNumber : null,
-          visaNumber: formData.nationality !== 'Indian' ? formData.visaNumber : null
+          visaNumber: formData.nationality !== 'Indian' ? formData.visaNumber : null,
+          healthStatus: formData.healthStatus,
+          bloodGroup: formData.bloodGroup || null
         })
       });
 
@@ -215,6 +222,44 @@ const WorkerRegistration = ({ onRegistrationSuccess, onBack }) => {
                 </div>
               </>
             )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Health Status *</label>
+              <select
+                name="healthStatus"
+                value={formData.healthStatus}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-lg"
+              >
+                <option value="GREEN">🟢 Healthy / Stable</option>
+                <option value="ORANGE">🟠 Moderate Risk (chronic illness / ongoing treatment)</option>
+                <option value="RED">🔴 Critical (serious conditions / hospitalization)</option>
+              </select>
+              <div className="mt-2">
+                <HealthStatusBadge status={formData.healthStatus} size="sm" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Blood Group (Optional)</label>
+              <select
+                name="bloodGroup"
+                value={formData.bloodGroup}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-lg"
+              >
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Photo URL (Optional)</label>

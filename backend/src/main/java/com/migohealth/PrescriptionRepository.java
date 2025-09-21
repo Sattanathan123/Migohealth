@@ -8,4 +8,5 @@ import java.util.List;
 public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
     List<Prescription> findByWorkerHealthIdOrderByCreatedAtDesc(String workerHealthId);
     List<Prescription> findByWorkerIdOrderByCreatedAtDesc(Long workerId);
+    long countByDoctorId(String doctorId);
 }

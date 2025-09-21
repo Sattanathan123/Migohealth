@@ -13,6 +13,8 @@ public class WorkerRegistrationRequest {
     private String aadharNumber;
     private String passportNumber;
     private String visaNumber;
+    private String healthStatus;
+    private String bloodGroup;
     
     public WorkerRegistrationRequest() {}
     
@@ -51,4 +53,10 @@ public class WorkerRegistrationRequest {
     
     public String getVisaNumber() { return visaNumber; }
     public void setVisaNumber(String visaNumber) { this.visaNumber = visaNumber; }
+    
+    public String getHealthStatus() { return healthStatus; }
+    public void setHealthStatus(String healthStatus) { this.healthStatus = healthStatus; }
+    
+    public String getBloodGroup() { return bloodGroup; }
+    public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
 }

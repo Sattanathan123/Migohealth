@@ -11,20 +11,28 @@ const PharmacistRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLogin
     email: '',
     password: ''
   });
+  const [generatedId, setGeneratedId] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const generateUniqueId = () => {
+    const prefix = 'PH-KL';
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.random().toString(36).substring(2, 5).toUpperCase();
+    return `${prefix}-${timestamp}-${random}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Store registration data
-      localStorage.setItem('pharmacistData', JSON.stringify(formData));
+      const uniqueId = generateUniqueId();
+      const registrationData = { ...formData, uniqueId };
       
-      onRegistrationSuccess();
+      localStorage.setItem('pharmacistData', JSON.stringify(registrationData));
+      setGeneratedId(uniqueId);
     } catch (error) {
       console.error('Registration failed:', error);
     } finally {
@@ -134,10 +142,10 @@ const PharmacistRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLogin
           <div className="flex space-x-4">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || generatedId}
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Generating ID...' : generatedId ? 'Registration Complete' : 'Generate Pharmacy ID'}
             </button>
             <button
               type="button"
@@ -147,6 +155,40 @@ const PharmacistRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLogin
               Back
             </button>
           </div>
+
+          {generatedId && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <div className="text-center">
+                <svg className="w-12 h-12 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h4 className="text-lg font-bold text-green-800 mb-3">Registration Successful!</h4>
+                <p className="text-sm text-green-700 mb-4">Your unique Pharmacy ID has been generated:</p>
+                <div className="bg-white border-2 border-green-400 rounded-lg px-4 py-3 font-mono text-lg font-bold text-green-800 mb-4 select-all">
+                  {generatedId}
+                </div>
+                <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 mb-4">
+                  <p className="text-xs text-yellow-800 font-semibold">⚠️ IMPORTANT: Save this ID securely!</p>
+                  <p className="text-xs text-yellow-700 mt-1">You will need this ID to login to the system. Copy it now.</p>
+                </div>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(generatedId);
+                    alert('ID copied to clipboard!');
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mr-3"
+                >
+                  Copy ID
+                </button>
+                <button
+                  onClick={onSwitchToLogin}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Proceed to Login
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="text-center">
             <button

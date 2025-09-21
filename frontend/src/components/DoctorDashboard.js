@@ -1,15 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PrescriptionUpload from './PrescriptionUpload';
+import DoctorQRScanner from './DoctorQRScanner';
+import PatientDetailsModal from './PatientDetailsModal';
+import { getDoctorStats } from '../utils/api';
 
 const DoctorDashboard = ({ doctor, onLogout }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [doctorStats, setDoctorStats] = useState({
+    totalPatients: 0,
+    prescriptions: 0,
+    consultations: 0
+  });
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: '📊' },
+    { id: 'scan', name: 'Scan Patient', icon: '📱' },
     { id: 'upload', name: 'Upload Prescription', icon: '📝' },
     { id: 'workers', name: 'Worker History', icon: '👥' },
     { id: 'profile', name: 'Profile', icon: '👨‍⚕️' }
   ];
+
+  useEffect(() => {
+    if (doctor && doctor.doctorId) {
+      fetchDoctorStats();
+    }
+  }, [doctor]);
+
+  const fetchDoctorStats = async () => {
+    try {
+      const stats = await getDoctorStats(doctor.doctorId);
+      setDoctorStats({
+        totalPatients: stats.totalPatients || 0,
+        prescriptions: stats.prescriptions || 0,
+        consultations: stats.consultations || 0
+      });
+    } catch (error) {
+      console.error('Failed to fetch doctor stats:', error);
+    }
+  };
+
+  const handleQRScan = (healthId) => {
+    setShowQRScanner(false);
+    setSelectedPatientId(healthId);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 relative overflow-hidden">
@@ -104,10 +139,10 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-2xl border border-blue-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                       <div className="flex items-center justify-between mb-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
-                          <span className="text-white font-bold text-2xl">24</span>
+                          <span className="text-white font-bold text-2xl">{doctorStats.totalPatients}</span>
                         </div>
                         <div className="text-right">
-                          <p className="text-3xl font-bold text-blue-700">24</p>
+                          <p className="text-3xl font-bold text-blue-700">{doctorStats.totalPatients}</p>
                           <p className="text-sm text-blue-600 font-semibold">+3 this week</p>
                         </div>
                       </div>
@@ -120,10 +155,10 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                     <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-2xl border border-green-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                       <div className="flex items-center justify-between mb-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                          <span className="text-white font-bold text-xl">156</span>
+                          <span className="text-white font-bold text-xl">{doctorStats.prescriptions}</span>
                         </div>
                         <div className="text-right">
-                          <p className="text-3xl font-bold text-green-700">156</p>
+                          <p className="text-3xl font-bold text-green-700">{doctorStats.prescriptions}</p>
                           <p className="text-sm text-green-600 font-semibold">+12 today</p>
                         </div>
                       </div>
@@ -136,10 +171,10 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                     <div className="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-2xl border border-purple-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                       <div className="flex items-center justify-between mb-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg">
-                          <span className="text-white font-bold text-2xl">42</span>
+                          <span className="text-white font-bold text-2xl">{doctorStats.consultations}</span>
                         </div>
                         <div className="text-right">
-                          <p className="text-3xl font-bold text-purple-700">42</p>
+                          <p className="text-3xl font-bold text-purple-700">{doctorStats.consultations}</p>
                           <p className="text-sm text-purple-600 font-semibold">This month</p>
                         </div>
                       </div>
@@ -188,13 +223,32 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
                         <div className="font-bold text-lg text-yellow-300">Upload Prescription</div>
                       </button>
                       <button 
-                        onClick={() => setActiveTab('workers')}
+                        onClick={() => setShowQRScanner(true)}
                         className="p-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                       >
-                        <div className="font-bold text-lg text-yellow-300">View Patients</div>
+                        <div className="font-bold text-lg text-yellow-300">Scan Patient</div>
                       </button>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'scan' && (
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">Scan Patient QR Code</h2>
+                <div className="text-center py-8">
+                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <span className="text-white font-bold text-3xl">📱</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Access Patient Records</h3>
+                  <p className="text-gray-600 mb-8">Scan the patient's QR code to view their details and prescription history</p>
+                  <button
+                    onClick={() => setShowQRScanner(true)}
+                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    Start QR Scanner
+                  </button>
                 </div>
               </div>
             )}
@@ -257,6 +311,22 @@ const DoctorDashboard = ({ doctor, onLogout }) => {
           </div>
         </div>
       </div>
+      
+      {/* QR Scanner Modal */}
+      {showQRScanner && (
+        <DoctorQRScanner
+          onScanSuccess={handleQRScan}
+          onClose={() => setShowQRScanner(false)}
+        />
+      )}
+      
+      {/* Patient Details Modal */}
+      {selectedPatientId && (
+        <PatientDetailsModal
+          healthId={selectedPatientId}
+          onClose={() => setSelectedPatientId(null)}
+        />
+      )}
     </div>
   );
 };

@@ -75,7 +75,13 @@ export const translations = {
     privacyPolicy: "Privacy Policy",
     termsOfService: "Terms of Service",
     security: "Security",
-    home: "Home"
+    home: "Home",
+    healthStatus: {
+      healthy: "Healthy",
+      moderate: "Moderate Risk",
+      critical: "Critical",
+      unknown: "Unknown"
+    }
   },
   
   hi: {
@@ -154,7 +160,13 @@ export const translations = {
     privacyPolicy: "गोपनीयता नीति",
     termsOfService: "सेवा की शर्तें",
     security: "सुरक्षा",
-    home: "घर"
+    home: "घर",
+    healthStatus: {
+      healthy: "स्वस्थ",
+      moderate: "मध्यम जोखिम",
+      critical: "गंभीर",
+      unknown: "अज्ञात"
+    }
   },
   
   ml: {
@@ -233,6 +245,12 @@ export const translations = {
     privacyPolicy: "സ്വകാര്യതാ നീതി",
     termsOfService: "സേവന നിബന്ധനകള്‍",
     security: "സുരക്ഷാ",
-    home: "ഹോം"
+    home: "ഹോം",
+    healthStatus: {
+      healthy: "ആരോഗ്യവാന്",
+      moderate: "മധ്യമ അപായം",
+      critical: "ഗുരുതരം",
+      unknown: "അറിയില്ലാത്ത"
+    }
   }
 };

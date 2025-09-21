@@ -15,6 +15,9 @@ public class WorkerController {
     @Autowired
     private EncryptionUtil encryptionUtil;
     
+    @Autowired
+    private PrescriptionRepository prescriptionRepository;
+    
     @GetMapping("/{healthId}")
     public ResponseEntity<Worker> getWorkerByHealthId(@PathVariable String healthId) {
         Optional<Worker> worker = workerService.getWorkerByHealthId(healthId);
@@ -31,6 +34,19 @@ public class WorkerController {
             return ResponseEntity.ok(w);
         }
         return ResponseEntity.notFound().build();
+    }
+    
+    @GetMapping("/{healthId}/prescriptions")
+    public ResponseEntity<?> getWorkerPrescriptions(@PathVariable String healthId) {
+        try {
+            Optional<Worker> worker = workerService.getWorkerByHealthId(healthId);
+            if (worker.isPresent()) {
+                return ResponseEntity.ok(prescriptionRepository.findByWorkerHealthIdOrderByCreatedAtDesc(healthId));
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
     
     @PostMapping("/register")

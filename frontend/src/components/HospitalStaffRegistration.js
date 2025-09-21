@@ -2,14 +2,21 @@ import React, { useState } from 'react';
 
 const HospitalStaffRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
-    staffId: '',
     name: '',
     password: '',
     hospitalName: '',
     designation: ''
   });
+  const [generatedStaffId, setGeneratedStaffId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const generateStaffId = () => {
+    const hospitalCode = formData.hospitalName.split(' ')[0].substring(0, 3).toUpperCase();
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.random().toString(36).substring(2, 4).toUpperCase();
+    return `HS-${hospitalCode}-${timestamp}-${random}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,19 +24,22 @@ const HospitalStaffRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLo
     setError('');
 
     try {
+      const staffId = generateStaffId();
+      const registrationData = { ...formData, staffId };
+      
       const response = await fetch('http://localhost:8085/api/hospital-staff/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(registrationData)
       });
 
       if (response.ok) {
         const staff = await response.json();
-        onRegistrationSuccess(staff);
+        setGeneratedStaffId(staffId);
       } else if (response.status === 409) {
-        setError('Staff ID already registered. Please use a different Staff ID.');
+        setError('Registration failed. Please try again.');
       } else if (response.status === 500) {
         setError('Server error. Please check if backend is running.');
       } else {
@@ -59,18 +69,13 @@ const HospitalStaffRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLo
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Staff ID</label>
-              <input
-                type="text"
-                name="staffId"
-                value={formData.staffId}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded-lg"
-                placeholder="Enter your hospital staff ID"
-              />
-            </div>
+            {generatedStaffId && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                <label className="block text-sm font-medium text-green-700 mb-1">Generated Staff ID</label>
+                <div className="text-lg font-mono text-green-800">{generatedStaffId}</div>
+                <p className="text-xs text-green-600 mt-1">Use this ID to login after registration</p>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -178,19 +183,53 @@ const HospitalStaffRegistration = ({ onRegistrationSuccess, onBack, onSwitchToLo
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
+              disabled={loading || generatedStaffId}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Generating ID...' : generatedStaffId ? 'Registration Complete' : 'Generate Staff ID'}
             </button>
           </form>
+
+          {generatedStaffId && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+              <div className="text-center">
+                <svg className="w-12 h-12 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h4 className="text-lg font-bold text-green-800 mb-3">Registration Successful!</h4>
+                <p className="text-sm text-green-700 mb-4">Your unique Staff ID has been generated:</p>
+                <div className="bg-white border-2 border-green-400 rounded-lg px-4 py-3 font-mono text-lg font-bold text-green-800 mb-4 select-all">
+                  {generatedStaffId}
+                </div>
+                <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 mb-4">
+                  <p className="text-xs text-yellow-800 font-semibold">⚠️ IMPORTANT: Save this ID securely!</p>
+                  <p className="text-xs text-yellow-700 mt-1">You will need this ID to login to the system. Copy it now.</p>
+                </div>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(generatedStaffId);
+                    alert('ID copied to clipboard!');
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mr-3"
+                >
+                  Copy ID
+                </button>
+                <button
+                  onClick={onSwitchToLogin}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Proceed to Login
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
               <button
                 onClick={onSwitchToLogin}
-                className="text-green-600 hover:text-green-800 font-medium"
+                className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 Login here
               </button>

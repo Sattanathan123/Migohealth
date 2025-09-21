@@ -28,6 +28,8 @@ public class WorkerService {
         }
         worker.setRegisteredBy(request.getRegisteredBy() != null ? request.getRegisteredBy() : "self");
         worker.setNationality(request.getNationality());
+        worker.setHealthStatus(request.getHealthStatus() != null ? request.getHealthStatus() : "GREEN");
+        worker.setBloodGroup(request.getBloodGroup());
         
         if ("Indian".equalsIgnoreCase(request.getNationality()) && request.getAadharNumber() != null) {
             worker.setAadharNumber(encryptionUtil.encrypt(request.getAadharNumber()));

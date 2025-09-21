@@ -1,4 +1,5 @@
 import React from 'react';
+import HealthStatusBadge from './HealthStatusBadge';
 
 const WorkerDetails = ({ worker, onBack }) => {
   if (!worker) return null;
@@ -28,7 +29,10 @@ const WorkerDetails = ({ worker, onBack }) => {
                 }}
               />
             )}
-            <h3 className="text-xl font-semibold text-gray-800">{worker.name}</h3>
+            <div className="flex items-center justify-center space-x-3 mb-2">
+              <h3 className="text-xl font-semibold text-gray-800">{worker.name}</h3>
+              <HealthStatusBadge status={worker.healthStatus} size="sm" />
+            </div>
             <p className="text-gray-600">Health ID: {worker.healthId}</p>
           </div>
 
